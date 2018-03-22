@@ -1,0 +1,129 @@
+﻿.table-style{
+    font-family:'MS Gothic';
+}
+.table-style .table-border{
+    border-style: solid;
+    border-color: #DCC5C7; 
+    border-width:2px;       
+}
+
+.table-style .table-header{
+    font-size:27px;
+    text-align: center;
+    font-weight:bold;    
+    /*background-color: #E7F3E5;*/
+    padding-top: 5px;
+    padding-bottom: 3px;
+    border-bottom-color:#DAC8CE;
+    background: -webkit-linear-gradient(#E7F3E5,#ceedc9);
+    background: -o-linear-gradient(#E7F3E5,#ceedc9);
+    background: -moz-linear-gradient(#E7F3E5,#ceedc9);
+    background: linear-gradient(#E7F3E5,#ceedc9);
+}
+
+.table-style .table-header2{
+    color:purple;
+    /*background-color: #F5DFED;*/
+    width:98%;            
+    padding-bottom :18px;
+    padding-left:30px;
+    text-align:center;
+    font-size:16px;
+    border-bottom-color:#DAC8CE;
+    border-bottom-color:#DAC8CE;
+    background: -webkit-linear-gradient(#F5DFED,#f1cae3);
+    background: -o-linear-gradient(#F5DFED,#f1cae3);
+    background: -moz-linear-gradient(#F5DFED,#f1cae3);
+    background: linear-gradient(#F5DFED,#f1cae3);
+}
+.table-style .table-purchase {
+    color:purple;
+    /*background-color: #F5DFED;*/
+    border-left:1px solid #DAC8CE;    
+    border-bottom-color:#DAC8CE;
+    background: -webkit-linear-gradient(#F5DFED,#f1cae3);
+    background: -o-linear-gradient(#F5DFED,#f1cae3);
+    background: -moz-linear-gradient(#F5DFED,#f1cae3);
+    background: linear-gradient(#F5DFED,#f1cae3);
+}
+
+.table-style .table-radiobutton{
+    border-left:1px solid #DAC8CE;
+    border-bottom-color:#DAC8CE;
+    border-top-color:#DAC8CE;
+}
+
+.table-style .table-tr{
+    border-top-color:#DAC8CE;
+}
+.table-style .table-question-tr{
+   border-top: 0px;
+   padding-left: 35px;
+}
+.button-area {
+    text-align: center;
+    border-radius: 17px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 15px;
+}
+.button-area .button-style {   
+    border-radius: 17px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-width:0px;
+    background: -webkit-linear-gradient(#8ebbe2,#3276b1);
+    background: -o-linear-gradient(#8ebbe2,#3276b1);
+    background: -moz-linear-gradient(#8ebbe2,#3276b1);
+    background: linear-gradient(#8ebbe2,#3276b1);    
+    transition: color 0.3s linear; /* vendorless fallback */
+    -o-transition: color 0.3s linear; /* opera */   
+    -moz-transition: color 0.3s linear; /* Firefox */
+    -webkit-transition: color 0.3s linear; /*safari and chrome */
+    outline: none;   
+}
+
+.button-area .button-style:hover {
+    background: -webkit-linear-gradient(#4f93cf,#275b87);
+    background: -o-linear-gradient(#4f93cf,#275b87);
+    background: -moz-linear-gradient(#4f93cf,#275b87);
+    background: linear-gradient(#4f93cf,#275b87);    
+    color:#d9d9d9;
+    cursor: pointer;
+
+}
+
+.backedit-title{
+    font-size:30px;
+}
+
+.backedit-subtitle{
+    font-size:25px;   
+}
+
+.bot-logo{
+    height:78px;
+}
+
+.navbar .navbar-brand-padding{
+    padding:8px 15px;
+}
+
+.Home{
+    display: none;
+}
+
+.Questions{
+    display: none;
+}
+
+
+
+.PairFund #errorpage{
+    display: none;
+    margin-bottom: 30px;
+}
+
+.PairFund #fundtable{
+    display: none;
+}

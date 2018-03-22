@@ -1,0 +1,11 @@
+﻿.footer-title{
+    font-size:18px;
+    font-weight:bold;
+}
+
+.footer-border{
+    border-style: solid;
+    border-width: 2px;
+    padding: 10px;
+    border-color:#DCC5C7;
+}
