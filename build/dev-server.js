@@ -14,6 +14,10 @@ var webpackConfig = process.env.NODE_ENV === 'testing'
   ? require('./webpack.prod.conf')
   : require('./webpack.dev.conf')
 
+var cors = require('cors')
+
+
+
 // default port where dev server listens for incoming traffic
 var port = process.env.PORT || config.dev.port
 // automatically open browser, if not set will be false
@@ -47,6 +51,7 @@ var sasConfig={
 
 
 var app = express()
+app.use(cors())
 var goods = require('../data/goods.json')
 var ratings = require('../data/ratings.json')
 var seller = require('../data/seller.json')
@@ -88,6 +93,25 @@ routes.get('/as400log/:library/:scrno/:date',(req,res) => {
   })
 })
 
+routes.get('/as400Flog/:library/:scrno/:refno/:updateno',(req,res) => {
+  db.open(connectionString, (err, dbStmt) => {
+    if (err) return console.log(err)
+    var sql = "select VAS_MSG_BODY from "
+    + req.params.library +".FVAMQSND where substr(VAS_MSG_BODY,1,4) = '" + req.params.scrno + "' and substr(VAS_MSG_BODY, 7, 70) like '" + req.params.refno + "%' and substr(VAS_MSG_BODY,77, 10) = '" + req.params.updateno + "'"
+    console.log(sql);
+    dbStmt.query(sql, [42], (err, data) => {
+      if (err) {        
+        console.log(err)    
+      }
+      dbStmt.close()
+      res.json(data)
+    })
+  })
+})
+
+
+
+
 routes.get('/swallowlog/:scrno/:refno/:updateno',(req,res) => {
   mssql.close()
   mssql.connect(swallowConfig,function (err) {
@@ -102,22 +126,24 @@ routes.get('/swallowlog/:scrno/:refno/:updateno',(req,res) => {
     res.json(data.recordsets)
     })
   })  
+
  })
 
 routes.get('/saslog/:scrno/:refno/:updateno',(req,res) => {
-mssql.close()
-mssql.connect(sasConfig,function (err) {
-  if(err) console.log(err)  
-  //create Request object
-  var request=new mssql.Request()
-  var sql = "select [REFERENCE_NUMBER] from [AMLHK0].[NCSC].[NAME_CHECK_RECORD_MAIN] where [REFERENCE_NUMBER] ='" + req.params.scrno + "-" + req.params.refno + "-" + req.params.updateno + "'";
-  console.log(sql);
-  request.query(sql,function(err,data){
-  if(err) console.log(err)  
-  //send records as a response
-  res.json(data.recordsets)
-  })
-})  
+  mssql.close()
+    mssql.connect(sasConfig,function (err) {
+      if(err) console.log(err)  
+      //create Request object
+      var request=new mssql.Request()
+      var sql = "select [REFERENCE_NUMBER] from [AMLHK0].[NCSC].[NAME_CHECK_RECORD_MAIN] where [REFERENCE_NUMBER] ='" + req.params.scrno + "-" + req.params.refno + "-" + req.params.updateno + "'";
+      console.log(sql);
+      request.query(sql,function(err,data){
+      if(err) console.log(err)  
+      //send records as a response
+      res.json(data.recordsets)
+      })
+    })  
+
 })
 
 
@@ -130,7 +156,6 @@ routes.get('/Customer/:id',(req,res) => {
         console.log(err)    
       }
       dbStmt.close()
-
       res.json(data)
     })
   })

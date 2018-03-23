@@ -4,17 +4,21 @@
     <div class="row">
         <div class="form-group">
             <div class="col-md-3">
-                <input type="text" class="form-control" :value="library">                    
+                <p>400 Library</p>
+                <input type="text" class="form-control" v-model="library">                    
             </div>
             <div class="col-md-3">
+                <p>SCREEN NUMBER</p>                
                 <select class="form-control" v-model="selected">
                 <option v-for="value in scrNoList" :key="value.FSTUS_SCR_NO">{{value.FSTUS_SCR_NO}}</option>        
                 </select>
             </div>
             <div class="col-md-3">
-                <input type="text" class="form-control" :value="date">                    
+                <p>UPDATE NO</p>                                
+                <input type="text" class="form-control" v-model="date">                    
             </div>
             <div class="col-md-3">
+                <p>搜尋</p>
                 <button class="btn btn-primary" @click="as400Search">Search</button>
             </div>
         </div>   
@@ -33,7 +37,7 @@
             </thead>
             <tbody>
                 <tr v-for="(item,index) in FBLSTUSList">
-                    <td><button class="btn btn-primary" @click="swallowSearch(index)">select</button></td>
+                    <td><button class="btn btn-primary" @click="interraptSearch(index)">select</button></td>
                     <td>{{item.FSTUS_SCR_NO}}</td>
                     <td>{{item.FSTUS_TXN_KEY}}</td>
                     <td>{{item.FSTUS_UPDATE_NO}}</td>
@@ -48,6 +52,19 @@
             <div class="modal-mask">
             <div class="modal-wrapper">
                 <div class="modal-container">
+                    
+                <div class="modal-header">
+                    <slot name="header">
+                    As400 FVAMQSND
+                    </slot>
+                </div>
+
+                <div class="modal-body">
+                    <slot name="body">
+                    <p v-if="as400HasData">FVAMQSND有資料</p>                        
+                    <p v-if="as400Loading">讀取中</p>
+                    </slot>
+                </div>
 
                 <div class="modal-header">
                     <slot name="header">
@@ -105,9 +122,12 @@ export default {
         scrNoList: {},
         FBLSTUSList: {},
         swallowList: {},
+        as400List: {},
         sasList: {},
         selected: "",
         showModal: false,
+        as400HasData: false,
+        as400Loading: false,
         swallowHasData: false,
         swallowHasRcvTime: false,
         swallowLoading: true,
@@ -117,7 +137,7 @@ export default {
     },
     methods: {
         getScrNo: function () {      
-            axios.get('http://localhost:8088/api/as400log/SASHKG1113')
+            axios.get('/api/as400log/' + this.library )
             .then((resp) => {
                 this.scrNoList = resp.data
                 console.log(resp.data)  
@@ -127,7 +147,7 @@ export default {
             })
         },
         as400Search: function () {      
-            axios.get('http://localhost:8088/api/as400log/'+ this.library + '/' + this.selected + '/' + this.date)
+            axios.get('/api/as400log/'+ this.library + '/' + this.selected + '/' + this.date)
             .then((resp) => {               
                 this.FBLSTUSList = resp.data 
                 console.log(resp.data)  
@@ -136,18 +156,42 @@ export default {
                 console.log(err)
             })
         },
-        swallowSearch: function (index) {      
+        interraptSearch: function (index) {      
             var FSTUS_SCR_NO = this.FBLSTUSList[index].FSTUS_SCR_NO;
             var FSTUS_TXN_KEY = this.FBLSTUSList[index].FSTUS_TXN_KEY;
             var FSTUS_UPDATE_NO = this.FBLSTUSList[index].FSTUS_UPDATE_NO;
-            var url = 'http://localhost:8088/api/swallowlog/'+ FSTUS_SCR_NO.trim() + '/' + FSTUS_TXN_KEY.trim() + '/' + FSTUS_UPDATE_NO;
-
+            this.as400HasData = false
+            this.as400Loading = true
+            
             this.swallowHasData = false
             this.swallowHasRcvTime = false
             this.swallowLoading = true            
             this.sasHasData = false
             this.sasLoading = true
-            console.log(url);
+
+            var splitTxnKey = FSTUS_TXN_KEY.split(" ");
+            var url = '/api/as400Flog/REMOTE/'+ FSTUS_SCR_NO.trim() + '/' + splitTxnKey[0] + '/' + FSTUS_UPDATE_NO;
+            console.log(url)
+            axios.get(url)
+            .then((resp) => {        
+                this.as400List = resp.data[0]
+                console.log(this.as400List)
+
+                try{
+                    this.as400HasData = (this.as400List.VAS_MSG_BODY != undefined) ? true : false                     
+                }catch(e) {
+                    this.as400HasData = false;
+                }               
+
+                this.as400Loading = false;
+                
+            }).catch((err) => {
+                console.log(err)                
+            })
+
+            
+            url = '/api/swallowlog/'+ FSTUS_SCR_NO.trim() + '/' + FSTUS_TXN_KEY.trim() + '/' + FSTUS_UPDATE_NO;
+            // console.log(url);
             axios.get(url)
             .then((resp) => {               
                 this.swallowList = resp.data[0]
@@ -163,11 +207,11 @@ export default {
                     this.swallowHasData = false;
                 }
 
-                console.log(this.swallowList)  
+                // console.log(this.swallowList)  
                 this.swallowLoading = false;
 
-                url = 'http://localhost:8088/api/saslog/'+ FSTUS_SCR_NO.trim() + '/' + FSTUS_TXN_KEY.trim() + '/' + FSTUS_UPDATE_NO;
-                console.log(url);
+                url = '/api/saslog/'+ FSTUS_SCR_NO.trim() + '/' + FSTUS_TXN_KEY.trim() + '/' + FSTUS_UPDATE_NO;
+                // console.log(url);
                 axios.get(url)
                 .then((resp) => {
                     this.sasList = resp.data[0]
@@ -176,7 +220,7 @@ export default {
                     }catch(e){
                         this.sasHasData = false;
                     }
-                    console.log(this.sasList)  
+                    // console.log(this.sasList)  
                     this.sasLoading = false;                
                 })
                 .catch((err) => {
@@ -188,8 +232,6 @@ export default {
                 console.log(err)
                 this.swallowLoading = false;                
             })
-
-            
             this.showModal = true;
         }
     },
