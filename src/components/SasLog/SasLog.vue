@@ -77,6 +77,7 @@ export default {
             })
         },
         as400Search: function () {      
+            this.searchQuery = "";
             axios.get('/api/as400log/'+ this.library + '/' + this.selected + '/' + this.date)
             .then((resp) => {               
                 this.FBLSTUSList = resp.data 

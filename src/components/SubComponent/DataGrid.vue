@@ -33,12 +33,12 @@
                     <slot name="header">
                     As400 FVAMQSND
                     </slot>
-                    <button class="btn btn-primary" style="float: right;" @click="showModal=false">OK</button>                    
+                    <button class="btn btn-danger" style="float: right;" @click="showModal=false">OK</button>                    
                 </div>
 
                 <div class="modal-body">
                     <slot name="body">                
-                      <p v-if="as400HasData">FVAMQSND有資料</p>              
+                      <p v-if="as400HasData == false && as400Loading == false">FVAMQSND無資料</p>              
                       <table class="table"  v-if="as400HasData">
                         <thead>
                           <tr>
@@ -55,7 +55,7 @@
                           </tr>                        
                         </tbody>
                       </table>                        
-                      <p v-if="as400Loading">讀取中</p>
+                      <p v-if="as400Loading"><img src="../../../data/img/loading.gif" alt=""></p>
                     </slot>
                 </div>
 
@@ -65,8 +65,8 @@
 
                 <div class="modal-body">
                     <slot name="body">
-                    <p v-if="swallowHasData">swallow有資料</p>                        
-                    <p v-if="swallowHasRcvTime">swallow有SAS回應資料</p>
+                    <p v-if="swallowHasData == false && swallowLoading == false">swallow無資料</p>                        
+                    <p v-if="swallowHasRcvTime == false && swallowLoading == false">swallow無SAS回應資料</p>
                       <table class="table" v-if="swallowHasData">
                         <thead>
                           <tr>
@@ -83,7 +83,7 @@
                           </tr>                        
                         </tbody>
                       </table>                                              
-                    <p v-if="swallowLoading">讀取中</p>
+                    <p v-if="swallowLoading"><img src="../../../data/img/loading.gif" alt=""></p>
                     </slot>
                 </div>
 
@@ -96,7 +96,7 @@
 
                 <div class="modal-body">
                     <slot name="body">
-                    <p v-if="sasHasData">Sas有資料</p>         
+                    <p v-if="sasHasData == false && sasLoading == false">Sas無資料</p>         
                     <table class="table" v-if="sasHasData">
                         <thead>
                           <tr>
@@ -111,7 +111,7 @@
                           </tr>                        
                         </tbody>
                       </table>      
-                    <p v-if="sasLoading">讀取中</p>
+                    <p v-if="sasLoading"><img src="../../../data/img/loading.gif" alt=""></p>
                     </slot>
                 </div>
 
@@ -199,8 +199,7 @@
             var FSTUS_TXN_KEY = this.filteredData[index].TXN_KEY;
             var FSTUS_UPDATE_NO = this.filteredData[index].UPDATE_NO;
             this.as400HasData = false
-            this.as400Loading = true
-            
+            this.as400Loading = true            
             this.swallowHasData = false
             this.swallowHasRcvTime = false
             this.swallowLoading = true            

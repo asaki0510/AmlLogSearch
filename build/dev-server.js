@@ -135,13 +135,13 @@ routes.get('/swallowlog/:scrno/:refno/:updateno',(req,res) => {
     if(err) console.log(err)  
     //send records as a response
     res.json(data.recordsets)
+    mssql.close()
     })
   })  
 
  })
 
 routes.get('/saslog/:scrno/:refno/:updateno',(req,res) => {
-  mssql.close()
     mssql.connect(sasConfig,function (err) {
       if(err) console.log(err)  
       //create Request object
@@ -152,7 +152,8 @@ routes.get('/saslog/:scrno/:refno/:updateno',(req,res) => {
       if(err) console.log(err)  
       //send records as a response
       res.json(data.recordsets)
-      })
+      mssql.close()
+      })      
     })  
 
 })
