@@ -80,8 +80,19 @@ routes.get('/as400log/:library',(req,res) => {
 routes.get('/as400log/:library/:scrno/:date',(req,res) => {
   db.open(connectionString, (err, dbStmt) => {
     if (err) return console.log(err)
-    var sql = "SELECT FSTUS_SCR_NO,FSTUS_TXN_KEY,FSTUS_UPDATE_NO,FSTUS_AS400_AML_STUS FROM "
-    + req.params.library +".FBLSTUS WHERE FSTUS_SCR_NO ='" + req.params.scrno +"' AND FSTUS_UPDATE_NO LIKE '" + req.params.date + "%'"
+    var sql = "SELECT FSTUS_SCR_NO as SCR_NO," +
+    "FSTUS_TXN_KEY as TXN_KEY," +
+    "FSTUS_UPDATE_NO as UPDATE_NO," +
+    "FSTUS_AML_STUS_CODE as STUS_CODE," +
+    "FSTUS_CASE_ID as CASE_ID," +
+    "FSTUS_CASE_STUS as CASE_STUS," +
+    "FSTUS_USER_ID as USER_ID," + 
+    "FSTUS_JRNL_NO as JRNL_NO," + 
+    "FSTUS_SND_AML_DATE as SND_DATE," + 
+    "FSTUS_SND_AML_TIME as SND_TIME," +
+    "FSTUS_SND_AML_FAIL as FAIL" + 
+    " FROM " +
+    req.params.library +".FBLSTUS WHERE FSTUS_SCR_NO ='" + req.params.scrno +"' AND FSTUS_UPDATE_NO LIKE '" + req.params.date + "%'"
     console.log(sql);
     dbStmt.query(sql, [42], (err, data) => {
       if (err) {        
@@ -96,7 +107,7 @@ routes.get('/as400log/:library/:scrno/:date',(req,res) => {
 routes.get('/as400Flog/:library/:scrno/:refno/:updateno',(req,res) => {
   db.open(connectionString, (err, dbStmt) => {
     if (err) return console.log(err)
-    var sql = "select VAS_MSG_BODY from "
+    var sql = "select VAS_SND_DATE,VAS_SND_TIME, VAS_MSG_BODY from "
     + req.params.library +".FVAMQSND where substr(VAS_MSG_BODY,1,4) = '" + req.params.scrno + "' and substr(VAS_MSG_BODY, 7, 70) like '" + req.params.refno + "%' and substr(VAS_MSG_BODY,77, 10) = '" + req.params.updateno + "'"
     console.log(sql);
     dbStmt.query(sql, [42], (err, data) => {
@@ -118,7 +129,7 @@ routes.get('/swallowlog/:scrno/:refno/:updateno',(req,res) => {
     if(err) console.log(err)  
     //create Request object
     var request=new mssql.Request()
-    var sql = "select [MESG_APPLI_MAIN_REFNO],[AML_ACK_DATE_TIME] from [MEGA_OBSWDBT].[dbo].[SWHNMSG] where [MESG_APPLI_MAIN_REFNO] = '" + req.params.scrno + "-" + req.params.refno + "-" + req.params.updateno + "'";
+    var sql = "select [MESG_APPLI_MAIN_REFNO],[AML_SEND_DATE_TIME],[AML_ACK_DATE_TIME] from [MEGA_OBSWDBT].[dbo].[SWHNMSG] where [MESG_APPLI_MAIN_REFNO] = '" + req.params.scrno + "-" + req.params.refno + "-" + req.params.updateno + "'";
     console.log(sql);
     request.query(sql,function(err,data){
     if(err) console.log(err)  
@@ -135,7 +146,7 @@ routes.get('/saslog/:scrno/:refno/:updateno',(req,res) => {
       if(err) console.log(err)  
       //create Request object
       var request=new mssql.Request()
-      var sql = "select [REFERENCE_NUMBER] from [AMLHK0].[NCSC].[NAME_CHECK_RECORD_MAIN] where [REFERENCE_NUMBER] ='" + req.params.scrno + "-" + req.params.refno + "-" + req.params.updateno + "'";
+      var sql = "select [REFERENCE_NUMBER],[TRANSACTION_DATE] from [AMLHK0].[NCSC].[NAME_CHECK_RECORD_MAIN] where [REFERENCE_NUMBER] ='" + req.params.scrno + "-" + req.params.refno + "-" + req.params.updateno + "'";
       console.log(sql);
       request.query(sql,function(err,data){
       if(err) console.log(err)  
