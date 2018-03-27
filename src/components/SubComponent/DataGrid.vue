@@ -193,20 +193,8 @@
           this.sortKey = key
           this.sortOrders[key] = this.sortOrders[key] * -1
         },
-        interraptSearch: function (index) {  
-            console.log(index)
-            var FSTUS_SCR_NO = this.filteredData[index].SCR_NO;
-            var FSTUS_TXN_KEY = this.filteredData[index].TXN_KEY;
-            var FSTUS_UPDATE_NO = this.filteredData[index].UPDATE_NO;
-            this.as400HasData = false
-            this.as400Loading = true            
-            this.swallowHasData = false
-            this.swallowHasRcvTime = false
-            this.swallowLoading = true            
-            this.sasHasData = false
-            this.sasLoading = true
-
-            var splitTxnKey = FSTUS_TXN_KEY.split(" ");
+        FVAMQSNDSearch: function (FSTUS_SCR_NO,FSTUS_TXN_KEY,FSTUS_UPDATE_NO) {  
+          var splitTxnKey = FSTUS_TXN_KEY.split(" ");
             var url = '/api/as400Flog/REMOTE/'+ FSTUS_SCR_NO.trim() + '/' + splitTxnKey[0] + '/' + FSTUS_UPDATE_NO;
             // console.log(url)
             axios.get(url)
@@ -222,9 +210,9 @@
             }).catch((err) => {
                 console.log(err)                
             })
-
-            
-            url = '/api/swallowlog/'+ FSTUS_SCR_NO.trim() + '/' + FSTUS_TXN_KEY.trim() + '/' + FSTUS_UPDATE_NO;
+        },
+        swallowLogSearch: function(FSTUS_SCR_NO,FSTUS_TXN_KEY,FSTUS_UPDATE_NO){
+          var url = '/api/swallowlog/'+ FSTUS_SCR_NO.trim() + '/' + FSTUS_TXN_KEY.trim() + '/' + FSTUS_UPDATE_NO;
             // console.log(url);
             axios.get(url)
             .then((resp) => {               
@@ -241,32 +229,50 @@
                 }catch(e) {
                     this.swallowHasData = false;
                 }
-
-                // console.log(this.swallowList)  
                 this.swallowLoading = false;
-
-                url = '/api/saslog/'+ FSTUS_SCR_NO.trim() + '/' + FSTUS_TXN_KEY.trim() + '/' + FSTUS_UPDATE_NO;
-                // console.log(url);
-                axios.get(url)
-                .then((resp) => {
-                    this.sasList = resp.data[0]
-                    try{
-                        this.sasHasData = (this.sasList[0].REFERENCE_NUMBER != null) ? true : false
-                    }catch(e){
-                        this.sasHasData = false;
-                    }
-                    // console.log(this.sasList)  
-                    this.sasLoading = false;                
-                })
-                .catch((err) => {
-                    console.log(err)
-                    this.sasLoading = false;  
-                })    
             })
             .catch((err) => {
                 console.log(err)
                 this.swallowLoading = false;                
             })
+        },
+        sasLogSearch: function(FSTUS_SCR_NO,FSTUS_TXN_KEY,FSTUS_UPDATE_NO) {
+            var url = '/api/saslog/'+ FSTUS_SCR_NO.trim() + '/' + FSTUS_TXN_KEY.trim() + '/' + FSTUS_UPDATE_NO;
+            // console.log(url);
+            axios.get(url)
+            .then((resp) => {
+                this.sasList = resp.data[0]
+                try{
+                    this.sasHasData = (this.sasList[0].REFERENCE_NUMBER != null) ? true : false
+                }catch(e){
+                    this.sasHasData = false;
+                }
+                this.sasLoading = false;                
+            })
+            .catch((err) => {
+                console.log(err)
+                this.sasLoading = false;  
+            })    
+        },
+        initFlag: function () {  
+            this.as400HasData = false
+            this.as400Loading = true            
+            this.swallowHasData = false
+            this.swallowHasRcvTime = false
+            this.swallowLoading = true            
+            this.sasHasData = false
+            this.sasLoading = true
+        },
+        interraptSearch: function (index) {  
+            console.log(index)
+            var FSTUS_SCR_NO = this.filteredData[index].SCR_NO;
+            var FSTUS_TXN_KEY = this.filteredData[index].TXN_KEY;
+            var FSTUS_UPDATE_NO = this.filteredData[index].UPDATE_NO;
+            
+            this.initFlag()
+            this.FVAMQSNDSearch(FSTUS_SCR_NO,FSTUS_TXN_KEY,FSTUS_UPDATE_NO)           
+            this.sasLogSearch(FSTUS_SCR_NO,FSTUS_TXN_KEY,FSTUS_UPDATE_NO)
+            this.swallowLogSearch(FSTUS_SCR_NO,FSTUS_TXN_KEY,FSTUS_UPDATE_NO)            
             this.showModal = true;
         }
       }
