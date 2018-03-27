@@ -1,30 +1,35 @@
-# y
+## SasLogSearch
 
-> y
+#400起點DB
+>DB:
+    LIBRARY.FBLSTUS
+>KEY: 
+    FSTUS_SCR_NO
+    FSTUS_TXN_KEY
+    FSTUS_UPDATE_NO
 
-## Build Setup
+#400MQDB
+>DB:
+    REMOTE.FVAMQSND
+>KEY: 
+    FSTUS_SCR_NO = substr(VAS_MSG_BODY,1,4)
+    FSTUS_TXN_KEY LIKE substr(VAS_MSG_BODY, 7, 70)
+    FSTUS_UPDATE_NO = substr(VAS_MSG_BODY,77, 10)
 
-``` bash
-# install dependencies
-npm install
+#SWALLOW
+>DB:
+    SIT:MEGA_OBSWDBT.dbo.SWHNMSG
+>IP:
+    SIT:192.168.51.30
+>KEY:
+    MESG_APPLI_MAIN_REFNO = FSTUS_SCR_NO-FSTUS_TXN_KEY-FSTUS_UPDATE_NO
 
-# serve with hot reload at localhost:8080
-npm run dev
 
-# build for production with minification
-npm run build
+#Sas
+>DB:
+    SIT:AMLHK0.NCSC.NAME_CHECK_RECORD_MAIN
+>IP
+    SIT:192.168.211.235
+>KEY:
+    REFERENCE_NUMBER = FSTUS_SCR_NO-FSTUS_TXN_KEY-FSTUS_UPDATE_NO
 
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
-```
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
