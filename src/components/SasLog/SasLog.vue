@@ -3,7 +3,7 @@
     <h1 class="text-center">AS400</h1>   
     <div class="row">
         <div class="form-group">
-            <div class="col-md-2 col-md-offset-1">
+            <div class="col-md-2 col-md-offset-2">
                 <p>400 Library</p>
                 <input type="text" class="form-control" v-model="library">                    
             </div>
@@ -33,7 +33,8 @@
     </div>
     <div class="row">
         <br />        
-        <div class="col-md-11 col-md-offset-1">
+        <p v-if="FBLSTUSLoading" class="text-center"><img src="../../../data/img/loading.gif" alt=""></p>
+        <div class="col-md-10 col-md-offset-1" v-if="FBLSTUSLoading == false">
             <datagrid
             :data="FBLSTUSList"
             :columns="FBLSTUSColumns"
@@ -42,9 +43,6 @@
             ></datagrid>
         </div>        
     </div>
-    
-
-    
   </div>
 </template>
 
@@ -62,7 +60,8 @@ export default {
         FBLSTUSList: [],                        
         selected: "",       
         searchQuery: '',
-        FBLSTUSColumns: ['SCR_NO', 'TXN_KEY' , 'UPDATE_NO','STUS_CODE','CASE_ID','CASE_STUS','USER_ID','JRNL_NO','SND_DATE','SND_TIME','FAIL'],        
+        FBLSTUSColumns: ['SCR_NO', 'TXN_KEY' , 'UPDATE_NO','STUS_CODE','CASE_ID','CASE_STUS','USER_ID','JRNL_NO','SND_DATE','SND_TIME','FAIL'],    
+        FBLSTUSLoading: false
     }
     },
     methods: {
@@ -76,14 +75,18 @@ export default {
                 console.log(err)
             })
         },
-        as400Search: function () {      
-            this.searchQuery = "";
+        as400Search: function () {   
+            this.FBLSTUSLoading = true   
+            this.searchQuery = ""
             axios.get('/api/as400log/'+ this.library + '/' + this.selected + '/' + this.date)
             .then((resp) => {               
                 this.FBLSTUSList = resp.data 
+                this.FBLSTUSLoading = false
                 console.log(resp.data)  
             })
             .catch((err) => {
+                this.FBLSTUSLoading = false
+                
                 console.log(err)
             })
         }

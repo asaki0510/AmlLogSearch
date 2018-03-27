@@ -79,7 +79,7 @@
                           <tr v-for="item in swallowList">
                             <td>{{item.MESG_APPLI_MAIN_REFNO}}</td>
                             <td>{{item.AML_SEND_DATE_TIME}}</td>
-                            <td>{{item.AML_ACK_DATE_TIME.substring(0,86)}}</td>
+                            <td>{{item.AML_ACK_DATE_TIME}}</td>
                           </tr>                        
                         </tbody>
                       </table>                                              
@@ -301,8 +301,14 @@ td {
 }
 
 th, td {
-  min-width: 120px;
+  min-width: 100%;
+  max-width: 100%;
   padding: 10px 20px;
+}
+
+th, tr {
+  min-width: 100%;
+  max-width: 100%;
 }
 
 th.active {
