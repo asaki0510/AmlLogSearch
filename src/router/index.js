@@ -4,7 +4,9 @@ import Home from '@/components/BuyPig/Home'
 import BuyPig from '@/components/BuyPig/BuyPig'
 import BuyTemplate from '@/components/BuyPig/BuyTemplate'
 import BuyPigCombineComponents from '@/components/BuyPig/BuyPigCombineComponents'
-import SasLog from '@/components/SasLog/SasLog'
+import SasLog from '@/components/AmlLog/SasLog'
+import PrimeLog from '@/components/AmlLog/PrimeLog'
+
 
 Vue.use(Router)
 
@@ -16,26 +18,16 @@ export default new Router({
       path: '/',
       name: 'Home',
       component: Home
-    }, 
-    {
-      path: '/BuyTemplate',
-      name: 'BuyTemplate',
-      component: BuyTemplate
-    }, 
-    {
-      path: '/BuyPig',
-      name: 'BuyPig',
-      component: BuyPig
-    }, 
-    {
-      path: '/BuyPigCombineComponents',
-      name: 'BuyPigCombineComponents',
-      component: BuyPigCombineComponents
-    }, 
+    },
     {
       path: '/SasLog',
       name: 'SasLog',
       component: SasLog
+    },
+    {
+      path: '/PrimeLog',
+      name: 'PrimeLog',
+      component: PrimeLog
     }
   ]
 })

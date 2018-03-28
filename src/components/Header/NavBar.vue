@@ -12,7 +12,9 @@
             <div class="collapse navbar-collapse" id="HomeNavbar">
             <ul class="nav navbar-nav">
                 <li><router-link to="./">首頁</router-link></li>                                             
-                <li><router-link to="./SasLog">SasLog</router-link></li>                                             
+                <li><router-link to="./SasLog">SasLog</router-link></li>      
+                <li><router-link to="./PrimeLog">PrimeLog</router-link></li>                                             
+                                                       
                 <!-- <li><router-link to="./BuyTemplate">買山豬模板</router-link></li> 
                 <li><router-link to="./BuyPig">買山豬</router-link></li>             
                 <li><router-link to="./BuyPigCombineComponents">買山豬組合模板</router-link></li>                        -->
@@ -32,3 +34,20 @@ export default {
   }
 }
 </script>
+
+<style>
+.glyphicon.spinning {
+    animation: spin 1s infinite linear;
+    -webkit-animation: spin2 1s infinite linear;
+}
+
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg); }
+    to { transform: scale(1) rotate(360deg); }
+}
+
+@-webkit-keyframes spin2 {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+</style>

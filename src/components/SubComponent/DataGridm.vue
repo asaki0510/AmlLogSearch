@@ -15,8 +15,8 @@
     <tbody>
       <tr v-for="(entry,index) in filteredData">
         <td v-for="column in columns" :key="column">
-          <!-- {{entry[index][column]}}           -->
-          {{entry[column]}} 
+          {{entry[index][column]}}          
+          <!-- {{entry[column]}}  -->
         </td>
       </tr>
     </tbody>

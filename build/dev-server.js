@@ -28,10 +28,12 @@ var app = express()
 app.use(cors())
 var routes = express.Router()
 
-
-var sasLogApi = require('./saslog-api-sit');
-
+// api require
+var sasLogApi = require('./saslog-api-sit')
+var primeLogApi = require('./primelog-api-sit')
 app.use('/api',sasLogApi)
+app.use('/primeapi',primeLogApi)
+
 
 var compiler = webpack(webpackConfig)
 

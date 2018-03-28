@@ -35,12 +35,12 @@
         <br />        
         <p v-if="FBLSTUSLoading" class="text-center"><img src="../../../data/img/loading.gif" alt=""></p>
         <div class="col-md-10 col-md-offset-1" v-if="FBLSTUSLoading == false">
-            <datagrid
+            <sasdatagrid
             :data="FBLSTUSList"
             :columns="FBLSTUSColumns"
             :filter-key="searchQuery"
             :hasButton="true"
-            ></datagrid>
+            ></sasdatagrid>
         </div>        
     </div>
   </div>
@@ -48,7 +48,7 @@
 
 <script>
 import axios from 'axios'
-import datagrid from '@/components/SubComponent/DataGrid'
+import sasdatagrid from '@/components/SubComponent/SasDataGrid'
 export default {
     name: 'sas-log-app',
     data () {
@@ -69,7 +69,7 @@ export default {
             axios.get('/api/as400log/' + this.library )
             .then((resp) => {
                 this.scrNoList = resp.data
-                console.log(resp.data)  
+                // console.log(resp.data)  
             })
             .catch((err) => {
                 console.log(err)
@@ -82,11 +82,10 @@ export default {
             .then((resp) => {               
                 this.FBLSTUSList = resp.data 
                 this.FBLSTUSLoading = false
-                console.log(resp.data)  
+                // console.log(resp.data)  
             })
             .catch((err) => {
-                this.FBLSTUSLoading = false
-                
+                this.FBLSTUSLoading = false                
                 console.log(err)
             })
         }
@@ -95,7 +94,7 @@ export default {
         this.getScrNo()
     },
     components: {
-        datagrid
+        sasdatagrid
     }
 }
 </script>
