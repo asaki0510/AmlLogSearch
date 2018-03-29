@@ -18,12 +18,21 @@
             </div>
             <div class="col-md-2">
                 <p>Ref No</p>      
-                   
-                <span class="glyphicon glyphicon-refresh spinning" v-if="refLoading"></span>
-                <select class="form-control" v-model="selectedRef" v-if="!refLoading">                   
+                <input id="refinput" class="form-control" type="text" placeholder="Type to search...">
+                <typeahead v-model="model" target="#refinput" :async-function="(swiftInOut == 'Out' ? getSwtOutQuery : getSwtInQuery)" item-key="OUR_REF_NO">
+                <template slot="item" slot-scope="props">
+                    <li v-for="(item, index) in props.items" :class="{active:props.activeIndex===index}">
+                    <a role="button" @click="props.select(item)">
+                        <span v-html="props.highlight(item)"></span>
+                    </a>
+                    </li>
+                </template>
+                </typeahead>                           
+                <!-- <span class="glyphicon glyphicon-refresh spinning" v-if="refLoading"></span>
+                <select class="form-control" v-model="refText" v-if="!refLoading">                   
                     <option v-for="item in swiftRefList" :key="item.FD300_OUR_REF_NO" v-if="swiftInOut == 'Out'">{{item.FD300_OUR_REF_NO}}</option>        
                     <option v-for="item in swiftRefList" :key="item.FD200_OUR_REF_NO" v-if="swiftInOut == 'In'">{{item.FD200_OUR_REF_NO}}</option>                            
-                </select>          
+                </select>           -->
             </div>
             <div class="col-md-2">
                 <p>搜尋</p>
@@ -59,11 +68,12 @@
 <script>
 import axios from 'axios'
 import datagrid from '@/components/SubComponent/DataGrid'
+import {Typeahead} from 'uiv'
 export default {
-    name: 'sas-log-app',
+    name: 'prime-log-app',
     data () {
     return {
-        msg: "SasLog",
+        msg: "PrimeLog",
         libraryList: [{
             "branch":"TCHICAGO",
             "shortBrn":"CGO",
@@ -81,53 +91,21 @@ export default {
         }],
         swiftRefList: {},
         swiftInOut: "Out",       
-        selectedLibrary: "TCHICAGO", 
-        selectedBrnCode: "0A3",    
-        selectedShortBrn: "CGO",                   
-        selectedRef: "",       
+        selectedLibrary: "TLOSANGEL", 
+        selectedBrnCode: "0A4",    
+        selectedShortBrn: "LAC",                   
+        refText: "",       
         refLoading: true,
         tableLoading: false,      
         swallowSearchQuery: "",        
         swallowList: [],  
         swallowColumns: ['TAG_20', 'SW_UMID' , 'MESG_TYPE','AML_SEND_DATE_TIME','AML_ACK_DATE_TIME'],        
         primeList:[],
-        primeColumns: ['Ref', 'ReqTime' , 'TranTime','ConfirmTime']
+        primeColumns: ['Ref', 'ReqTime' , 'TranTime','ConfirmTime'],
+        model:""
     }
     },
-    methods: {
-        getSwtOutRef: function () {      
-            this.swiftRefList = {}
-            this.refLoading = true
-            axios.get('/primeapi/as400SwiftOut/' + this.selectedLibrary )
-            .then((resp) => {
-                this.swiftRefList = resp.data
-                this.refLoading = false
-            })
-            .catch((err) => {
-                console.log(err)
-                this.refLoading = false
-            })
-        },
-        getSwtInRef: function () { 
-            this.swiftRefList = {}
-            this.refLoading = true            
-            axios.get('/primeapi/as400SwiftIn/' + this.selectedLibrary )
-            .then((resp) => {
-                this.swiftRefList = resp.data
-                this.refLoading = false
-            })
-            .catch((err) => {
-                console.log(err)
-                this.refLoading = false
-            })
-        },
-        changeSelect: function() {
-            if(this.swiftInOut === "Out"){
-                this.getSwtOutRef()                
-            }else{
-                this.getSwtInRef()
-            }
-        },
+    methods: {        
         searchLog: function () {   
             this.tableLoading = true   
             this.swallowSearchQuery = ""
@@ -145,7 +123,7 @@ export default {
             }
         },
         getSwallowSwtOut: function () {   
-            axios.get('/primeapi/swallowlog/out/' + this.selectedBrnCode + "/" + this.selectedRef)
+            axios.get('/primeapi/swallowlog/out/' + this.selectedBrnCode + "/" + this.model.OUR_REF_NO)
             .then((resp) => {
                 this.swallowList = resp.data[0]
                 this.tableLoading = false   
@@ -160,7 +138,7 @@ export default {
             })
         },
         getSwallowSwtIn: function () {   
-            axios.get('/primeapi/swallowlog/in/' + this.selectedBrnCode + "/" + this.selectedRef)
+            axios.get('/primeapi/swallowlog/in/' + this.selectedBrnCode + "/" + this.model.OUR_REF_NO)
             .then((resp) => {
                 this.swallowList = resp.data[0]
                 this.tableLoading = false   
@@ -186,13 +164,35 @@ export default {
                 console.log(err)
                 this.tableLoading = false   
             })
+        },
+        getSwtOutQuery (query, done) {
+        axios.get('http://localhost:8088/primeapi/as400SwiftOut/' + this.selectedLibrary + '/' + query)        
+          .then(res => {
+            done(res.data)
+          })
+          .catch(err => {
+            // any error handler
+          })
+        },
+        getSwtInQuery (query, done) {
+        axios.get('http://localhost:8088/primeapi/as400SwiftIn/' + this.selectedLibrary + '/' + query)        
+          .then(res => {
+            done(res.data)
+          })
+          .catch(err => {
+            // any error handler
+          })
+        },
+        changeSelect(){
+            this.model = ""
         }
     },
     mounted () {
-        this.getSwtOutRef()
+        
     },
     components: {
-        datagrid
+        datagrid,
+        Typeahead
     }
 }
 </script>

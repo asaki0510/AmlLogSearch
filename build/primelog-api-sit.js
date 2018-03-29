@@ -30,8 +30,7 @@ var primeConfig={
 routes.get('/as400SwiftIn/:library',(req,res) => {
     db.open(connectionString, (err, dbStmt) => {
       if (err) return console.log(err)
-      var sql = "SELECT DISTINCT FD200_OUR_REF_NO FROM " + req.params.library + ".FD200"
-      console.log(sql);
+      var sql = "SELECT DISTINCT FD200_OUR_REF_NO as OUR_REF_NO FROM " + req.params.library + ".FD200"
       dbStmt.query(sql, [42], (err, data) => {
         if (err) {        
           console.log(err)    
@@ -45,8 +44,35 @@ routes.get('/as400SwiftIn/:library',(req,res) => {
 routes.get('/as400SwiftOut/:library',(req,res) => {
     db.open(connectionString, (err, dbStmt) => {
       if (err) return console.log(err)
-      var sql = "SELECT DISTINCT FD300_OUR_REF_NO FROM " + req.params.library + ".FD300"
-      console.log(sql);
+      var sql = "SELECT DISTINCT FD300_OUR_REF_NO as OUR_REF_NO FROM " + req.params.library + ".FD300"
+      dbStmt.query(sql, [42], (err, data) => {
+        if (err) {        
+          console.log(err)    
+        }
+        dbStmt.close()
+        res.send(data)
+      })
+    })
+})  
+
+routes.get('/as400SwiftOut/:library/:queryref',(req,res) => {
+    db.open(connectionString, (err, dbStmt) => {
+      if (err) return console.log(err)
+      var sql = "SELECT DISTINCT FD300_OUR_REF_NO as OUR_REF_NO FROM " + req.params.library + ".FD300 where FD300_OUR_REF_NO like '" + req.params.queryref + "%'"
+      dbStmt.query(sql, [42], (err, data) => {
+        if (err) {        
+          console.log(err)    
+        }
+        dbStmt.close()
+        res.send(data)
+      })
+    })
+})  
+
+routes.get('/as400SwiftIn/:library/:queryref',(req,res) => {
+    db.open(connectionString, (err, dbStmt) => {
+      if (err) return console.log(err)
+      var sql = "SELECT DISTINCT FD200_OUR_REF_NO as OUR_REF_NO FROM " + req.params.library + ".FD200 where FD200_OUR_REF_NO like '" + req.params.queryref + "%'"
       dbStmt.query(sql, [42], (err, data) => {
         if (err) {        
           console.log(err)    
