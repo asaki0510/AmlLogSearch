@@ -18,7 +18,7 @@
             </div>
             <div class="col-md-2">
                 <p>Ref No</p>      
-                <input id="refinput" class="form-control" type="text" placeholder="Type to search...">
+                <input id="refinput" class="form-control" type="text" placeholder="Type to search..." autocomplete="off">
                 <typeahead v-model="model" target="#refinput" :async-function="(swiftInOut == 'Out' ? getSwtOutQuery : getSwtInQuery)" item-key="OUR_REF_NO">
                 <template slot="item" slot-scope="props">
                     <li v-for="(item, index) in props.items" :class="{active:props.activeIndex===index}">

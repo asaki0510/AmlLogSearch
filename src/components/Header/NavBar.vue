@@ -14,10 +14,6 @@
                 <li><router-link to="./">首頁</router-link></li>                                             
                 <li><router-link to="./SasLog">SasLog</router-link></li>      
                 <li><router-link to="./PrimeLog">PrimeLog</router-link></li>                                             
-                                                       
-                <!-- <li><router-link to="./BuyTemplate">買山豬模板</router-link></li> 
-                <li><router-link to="./BuyPig">買山豬</router-link></li>             
-                <li><router-link to="./BuyPigCombineComponents">買山豬組合模板</router-link></li>                        -->
             </ul>
             </div>
         </div>
