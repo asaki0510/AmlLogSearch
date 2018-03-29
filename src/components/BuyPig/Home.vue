@@ -9,7 +9,7 @@ export default {
   name: 'Hello',
   data () {
     return {
-      msg: '就是首頁'
+      msg: '洗錢防制傳送軌跡查詢'
     }
   }
 }

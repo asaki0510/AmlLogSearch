@@ -1,6 +1,6 @@
 <template>
   <div class="sas-log-app container">
-    <h1 class="text-center">AS400</h1>   
+    <h1 class="text-center">AS400 SWIFT WIRE</h1>   
     <div class="row">
         <div class="form-group">
             <div class="col-md-2 col-md-offset-2">
@@ -99,9 +99,9 @@ export default {
         tableLoading: false,      
         swallowSearchQuery: "",        
         swallowList: [],  
-        swallowColumns: ['TAG_20', 'SW_UMID' , 'MESG_TYPE','AML_SEND_DATE_TIME','AML_ACK_DATE_TIME'],        
+        swallowColumns: ['TAG_20', 'SW_UMID' , 'AML_RESULT', 'MESG_TYPE','AML_SEND_DATE_TIME','AML_ACK_DATE_TIME'],        
         primeList:[],
-        primeColumns: ['Ref', 'ReqTime' , 'TranTime','ConfirmTime'],
+        primeColumns: ['SeqNumb','Ref','UserMessageReference','Source','Dept', 'ReqTime' ,'ConfirmTime'],
         model:""
     }
     },
@@ -123,7 +123,8 @@ export default {
             }
         },
         getSwallowSwtOut: function () {   
-            axios.get('/primeapi/swallowlog/out/' + this.selectedBrnCode + "/" + this.model.OUR_REF_NO)
+            var queryRef = (this.model.OUR_REF_NO == undefined ? this.model : this.model.OUR_REF_NO)            
+            axios.get('/primeapi/swallowlog/out/' + this.selectedBrnCode + "/" + queryRef)
             .then((resp) => {
                 this.swallowList = resp.data[0]
                 this.tableLoading = false   
@@ -138,7 +139,8 @@ export default {
             })
         },
         getSwallowSwtIn: function () {   
-            axios.get('/primeapi/swallowlog/in/' + this.selectedBrnCode + "/" + this.model.OUR_REF_NO)
+            var queryRef = (this.model.OUR_REF_NO == undefined ? this.model : this.model.OUR_REF_NO)
+            axios.get('/primeapi/swallowlog/in/' + this.selectedBrnCode + "/" + queryRef)
             .then((resp) => {
                 this.swallowList = resp.data[0]
                 this.tableLoading = false   
@@ -166,7 +168,8 @@ export default {
             })
         },
         getSwtOutQuery (query, done) {
-        axios.get('http://localhost:8088/primeapi/as400SwiftOut/' + this.selectedLibrary + '/' + query)        
+        query = query.toUpperCase()
+        axios.get('/primeapi/as400SwiftOut/' + this.selectedLibrary + '/' + query)        
           .then(res => {
             done(res.data)
           })
@@ -175,7 +178,8 @@ export default {
           })
         },
         getSwtInQuery (query, done) {
-        axios.get('http://localhost:8088/primeapi/as400SwiftIn/' + this.selectedLibrary + '/' + query)        
+        query = query.toUpperCase()
+        axios.get('/primeapi/as400SwiftIn/' + this.selectedLibrary + '/' + query)        
           .then(res => {
             done(res.data)
           })

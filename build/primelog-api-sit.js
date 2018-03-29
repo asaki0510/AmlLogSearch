@@ -58,7 +58,7 @@ routes.get('/as400SwiftOut/:library',(req,res) => {
 routes.get('/as400SwiftOut/:library/:queryref',(req,res) => {
     db.open(connectionString, (err, dbStmt) => {
       if (err) return console.log(err)
-      var sql = "SELECT DISTINCT FD300_OUR_REF_NO as OUR_REF_NO FROM " + req.params.library + ".FD300 where FD300_OUR_REF_NO like '" + req.params.queryref + "%'"
+      var sql = "SELECT DISTINCT trim(FD300_OUR_REF_NO) as OUR_REF_NO FROM " + req.params.library + ".FD300 where FD300_OUR_REF_NO like '%" + req.params.queryref + "%' FETCH FIRST 10 ROWS ONLY"
       dbStmt.query(sql, [42], (err, data) => {
         if (err) {        
           console.log(err)    
@@ -72,7 +72,7 @@ routes.get('/as400SwiftOut/:library/:queryref',(req,res) => {
 routes.get('/as400SwiftIn/:library/:queryref',(req,res) => {
     db.open(connectionString, (err, dbStmt) => {
       if (err) return console.log(err)
-      var sql = "SELECT DISTINCT FD200_OUR_REF_NO as OUR_REF_NO FROM " + req.params.library + ".FD200 where FD200_OUR_REF_NO like '" + req.params.queryref + "%'"
+      var sql = "SELECT DISTINCT trim(FD200_OUR_REF_NO) as OUR_REF_NO FROM " + req.params.library + ".FD200 where FD200_OUR_REF_NO like '%" + req.params.queryref + "%' FETCH FIRST 10 ROWS ONLY"
       dbStmt.query(sql, [42], (err, data) => {
         if (err) {        
           console.log(err)    
@@ -88,7 +88,7 @@ routes.get('/swallowlog/out/:brn/:ref',(req,res) => {
         if(err) console.log(err)  
         //create Request object
         var request=new mssql.Request(pool)
-        var sql = "select TAG_20,SW_UMID,MESG_TYPE,AML_SEND_DATE_TIME,AML_ACK_DATE_TIME from SWMOMSG WHERE BRANCH = '" + req.params.brn + "' AND TAG_20 ='" + req.params.ref + "'";
+        var sql = "select TAG_20,SW_UMID,MESG_TYPE,AML_RESULT,AML_SEND_DATE_TIME,AML_ACK_DATE_TIME from SWMOMSG WHERE BRANCH = '" + req.params.brn + "' AND TAG_20 ='" + req.params.ref + "'";
         request.query(sql,function(err,data){
             if(err) console.log(err)  
             //send records as a response
@@ -104,7 +104,7 @@ routes.get('/swallowlog/in/:brn/:ref',(req,res) => {
         if(err) console.log(err)  
         //create Request object
         var request=new mssql.Request(pool)
-        var sql = "select TAG_20,SW_UMID,MESG_TYPE,AML_SEND_DATE_TIME,AML_ACK_DATE_TIME from SWMIMSG WHERE BRANCH = '" + req.params.brn + "' AND TAG_20 ='" + req.params.ref + "'";
+        var sql = "select TAG_20,SW_UMID,MESG_TYPE,AML_RESULT,AML_SEND_DATE_TIME,AML_ACK_DATE_TIME from SWMIMSG WHERE BRANCH = '" + req.params.brn + "' AND TAG_20 ='" + req.params.ref + "'";
         request.query(sql,function(err,data){
             if(err) console.log(err)  
             //send records as a response
@@ -119,7 +119,7 @@ routes.get('/primelog/:brn/:ref',(req,res) => {
         if(err) console.log(err)  
         //create Request object
         var request=new mssql.Request(pool)
-        var sql = "select Ref,ReqTime,TranTime,ConfirmTime from FilterTranTable WHERE Branch = '" + req.params.brn + "' AND Ref ='" + req.params.ref + "'";
+        var sql = "select SeqNumb,Ref,UserMessageReference,Source,Dept,ReqTime,ConfirmTime from FilterTranTable WHERE Branch = '" + req.params.brn + "' AND Ref ='" + req.params.ref + "'";
         request.query(sql,function(err,data){
             if(err) console.log(err)  
             //send records as a response
