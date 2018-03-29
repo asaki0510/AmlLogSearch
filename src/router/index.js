@@ -1,9 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/components/BuyPig/Home'
-import BuyPig from '@/components/BuyPig/BuyPig'
-import BuyTemplate from '@/components/BuyPig/BuyTemplate'
-import BuyPigCombineComponents from '@/components/BuyPig/BuyPigCombineComponents'
+import Home from '@/components/AmlLog/Home'
 import SasLog from '@/components/AmlLog/SasLog'
 import PrimeLog from '@/components/AmlLog/PrimeLog'
 
