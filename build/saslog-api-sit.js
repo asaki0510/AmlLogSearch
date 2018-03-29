@@ -88,7 +88,18 @@ routes.get('/swallowlog/:scrno/:refno/:updateno',(req,res) => {
         if(err) console.log(err)  
         //create Request object
         var request=new mssql.Request(pool)
-        var sql = "select [MESG_APPLI_MAIN_REFNO],[AML_SEND_DATE_TIME],[AML_ACK_DATE_TIME] from [MEGA_OBSWDBT].[dbo].[SWHNMSG] where [MESG_APPLI_MAIN_REFNO] = '" + req.params.scrno + "-" + req.params.refno + "-" + req.params.updateno + "'";
+        var sql = "select MESG_APPLI_MAIN_REFNO,"+
+        "case AML_RESULT " + 
+        "when '000' then 'No Hit(000)' " +        
+        "when '001' then 'Wait Ack(001)' " +
+        "when '002' then 'Accept(002)' " +
+        "when '003' then 'Reject(003)' " +
+        "when '008' then 'Non Check(008)' " +
+        "else AML_RESULT end as AML_RESULT" +
+         "," +       
+        "AML_SEND_DATE_TIME,"+
+        "AML_ACK_DATE_TIME"+
+        " from [MEGA_OBSWDBT].[dbo].[SWHNMSG] where [MESG_APPLI_MAIN_REFNO] = '" + req.params.scrno + "-" + req.params.refno + "-" + req.params.updateno + "'";
         request.query(sql,function(err,data){
             if(err) console.log(err)  
             //send records as a response

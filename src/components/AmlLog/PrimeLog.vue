@@ -101,7 +101,7 @@ export default {
         swallowList: [],  
         swallowColumns: ['TAG_20', 'SW_UMID' , 'AML_RESULT', 'MESG_TYPE','AML_SEND_DATE_TIME','AML_ACK_DATE_TIME'],        
         primeList:[],
-        primeColumns: ['SeqNumb','Ref','UserMessageReference','Source','Dept', 'ReqTime' ,'ConfirmTime'],
+        primeColumns: ['SeqNumb','Ref','UserMessageReference','Source','Dept', 'ReqTime' , 'ConfirmState', 'ConfirmTime'],
         model:""
     }
     },

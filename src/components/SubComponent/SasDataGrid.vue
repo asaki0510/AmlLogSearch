@@ -71,6 +71,7 @@
                         <thead>
                           <tr>
                             <th>MESG_APPLI_MAIN_REFNO</th>
+                            <th>AML_RESULT</th>
                             <th>AML_SEND_DATE_TIME</th>
                             <th>AML_ACK_DATE_TIME</th>
                           </tr>
@@ -78,6 +79,7 @@
                         <tbody>
                           <tr v-for="item in swallowList">
                             <td>{{item.MESG_APPLI_MAIN_REFNO}}</td>
+                            <td>{{item.AML_RESULT}}</td>
                             <td>{{item.AML_SEND_DATE_TIME}}</td>
                             <td>{{item.AML_ACK_DATE_TIME}}</td>
                           </tr>                        

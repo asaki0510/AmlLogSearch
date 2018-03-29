@@ -88,7 +88,19 @@ routes.get('/swallowlog/out/:brn/:ref',(req,res) => {
         if(err) console.log(err)  
         //create Request object
         var request=new mssql.Request(pool)
-        var sql = "select TAG_20,SW_UMID,MESG_TYPE,AML_RESULT,AML_SEND_DATE_TIME,AML_ACK_DATE_TIME from SWMOMSG WHERE BRANCH = '" + req.params.brn + "' AND TAG_20 ='" + req.params.ref + "'";
+        var sql = "select TAG_20," + 
+        "SW_UMID,MESG_TYPE," + 
+        "case AML_RESULT " + 
+        "when '000' then 'No Hit(000)' " +        
+        "when '001' then 'Wait Ack(001)' " +
+        "when '002' then 'Accept(002)' " +
+        "when '003' then 'Reject(003)' " +
+        "when '008' then 'Non Check(008)' " +
+        "else AML_RESULT end as AML_RESULT" +
+         "," + 
+        "AML_SEND_DATE_TIME," + 
+        "AML_ACK_DATE_TIME" + 
+        " from SWMOMSG WHERE BRANCH = '" + req.params.brn + "' AND TAG_20 ='" + req.params.ref + "'";
         request.query(sql,function(err,data){
             if(err) console.log(err)  
             //send records as a response
@@ -104,7 +116,20 @@ routes.get('/swallowlog/in/:brn/:ref',(req,res) => {
         if(err) console.log(err)  
         //create Request object
         var request=new mssql.Request(pool)
-        var sql = "select TAG_20,SW_UMID,MESG_TYPE,AML_RESULT,AML_SEND_DATE_TIME,AML_ACK_DATE_TIME from SWMIMSG WHERE BRANCH = '" + req.params.brn + "' AND TAG_20 ='" + req.params.ref + "'";
+        var sql = "select TAG_20," + 
+        "SW_UMID,MESG_TYPE," + 
+        "case AML_RESULT " + 
+        "when '000' then 'No Hit(000)' " +                
+        "when '001' then 'Wait Ack(001)' " +
+        "when '002' then 'Accept(002)' " +
+        "when '003' then 'Reject(003)' " +
+        "when '008' then 'Non Check(008)' " +
+        "else AML_RESULT end as AML_RESULT" +
+         "," + 
+        "AML_SEND_DATE_TIME," + 
+        "AML_ACK_DATE_TIME" + 
+        " from SWMIMSG WHERE BRANCH = '" + req.params.brn + "' AND TAG_20 ='" + req.params.ref + "'";
+        // var sql = "select TAG_20,SW_UMID,MESG_TYPE,AML_RESULT,AML_SEND_DATE_TIME,AML_ACK_DATE_TIME from SWMIMSG WHERE BRANCH = '" + req.params.brn + "' AND TAG_20 ='" + req.params.ref + "'";
         request.query(sql,function(err,data){
             if(err) console.log(err)  
             //send records as a response
@@ -119,7 +144,7 @@ routes.get('/primelog/:brn/:ref',(req,res) => {
         if(err) console.log(err)  
         //create Request object
         var request=new mssql.Request(pool)
-        var sql = "select SeqNumb,Ref,UserMessageReference,Source,Dept,ReqTime,ConfirmTime from FilterTranTable WHERE Branch = '" + req.params.brn + "' AND Ref ='" + req.params.ref + "'";
+        var sql = "select SeqNumb,Ref,UserMessageReference,Source,Dept,ReqTime,ConfirmState,ConfirmTime from FilterTranTable WHERE Branch = '" + req.params.brn + "' AND Ref ='" + req.params.ref + "'";
         request.query(sql,function(err,data){
             if(err) console.log(err)  
             //send records as a response
