@@ -1,36 +1,29 @@
 ﻿<template>
   <div class="hello">
     <h1 class="text-center">{{ msg }}</h1>
-    <table class="table">
+    <div class="container">
+      <table class="table">
       <thead>
         <tr>
-        <th scope="col">#</th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
-        <th scope="col">Handle</th>
+        <th scope="col">待更新IP資訊</th>
+
         </tr>
       </thead>
       <tbody>
         <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
+          <th scope="row">待更新SQL資訊</th>
+
         </tr>
         <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
+          <th scope="row">待更新</th>
+
         </tr>
         <tr>
-          <th scope="row">3</th>
-          <td>Larry</td>
-          <td>the Bird</td>
-          <td>@twitter</td>
+
         </tr>
       </tbody>
     </table>
+    </div>    
   </div>
 </template>
 
