@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import VueResource from 'vue-resource'
+// import 'reset-css'
 Vue.use(VueResource);
 import Popper from 'popper.js'
 import '@/assets/css/bootstrap.css'

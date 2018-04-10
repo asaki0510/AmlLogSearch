@@ -1,11 +1,12 @@
 <template>
 <div>
-  <table>
+  <table class="table-body table-color">
     <thead>
-      <tr>
+      <tr class="table-tr">
         <th v-for="column in columns"
           @click="sortBy(column)"
-          :class="{ active: sortKey == column }">
+          :class="{ active: sortKey == column }"
+          class="table-th">
           {{ column | capitalize }}
           <span class="arrow" :class="sortOrders[column] > 0 ? 'asc' : 'dsc'">
           </span>
@@ -13,8 +14,8 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(entry,index) in filteredData">
-        <td v-for="column in columns" :key="column">
+      <tr v-for="(entry,index) in filteredData" class="table-tr">
+        <td v-for="column in columns" :key="column" class="table-td">
           <!-- {{entry[index][column]}}           -->
           {{entry[column]}} 
         </td>
@@ -80,19 +81,19 @@
 </script>
 
 <style>
-body {
+.table-body {
   font-family: Helvetica Neue, Arial, sans-serif;
   font-size: 14px;
   color: #444;
 }
 
-table {
-  border: 2px solid #428bca;
+.table-color {
+  border: 2px solid #128bca;
   border-radius: 3px;
   background-color: #fff;
 }
 
-th {
+.table-th {
   background-color: #428bca;
   color: rgba(255,255,255,0.66);
   cursor: pointer;
@@ -102,26 +103,26 @@ th {
   user-select: none;
 }
 
-td {
+.table-td {
   background-color: #f9f9f9;
 }
 
-th, td {
+.table-th, .table-td {
   min-width: 100%;
   max-width: 100%;
   padding: 10px 20px;
 }
 
-th, tr {
+.table-th, .table-tr {
   min-width: 100%;
   max-width: 100%;
 }
 
-th.active {
+.table-th.active {
   color: #fff;
 }
 
-th.active .arrow {
+.table-th.active .arrow {
   opacity: 1;
 }
 

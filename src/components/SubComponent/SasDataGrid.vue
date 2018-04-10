@@ -1,12 +1,13 @@
 <template>
 <div>
-  <table>
+  <table class="table-color table-body">
     <thead>
-      <tr>
-        <th v-if="hasButton">Select</th>
+      <tr class="table-tr">
+        <th v-if="hasButton" class="table-th">Select</th>
         <th v-for="column in columns"
           @click="sortBy(column)"
-          :class="{ active: sortKey == column }">
+          :class="{ active: sortKey == column }"
+          class="table-th">
           {{ column | capitalize }}
           <span class="arrow" :class="sortOrders[column] > 0 ? 'asc' : 'dsc'">
           </span>
@@ -14,9 +15,9 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(entry,index) in filteredData">
-        <td v-if="hasButton"><button class="btn btn-primary" @click="interraptSearch(index)">select</button></td>        
-        <td v-for="column in columns">
+      <tr v-for="(entry,index) in filteredData" class="table-tr">
+        <td v-if="hasButton"><button class="btn btn-primary table-td" @click="interraptSearch(index)">select</button></td>        
+        <td v-for="column in columns" class="table-td">
           {{entry[column]}}          
         </td>
       </tr>
@@ -24,7 +25,7 @@
   </table>
   
   <div v-if="showModal" @close="showModal = false">        
-        <transition name="modal">
+        <div name="modal">
             <div class="modal-mask">
             <div class="modal-wrapper">
                 <div class="modal-container">
@@ -39,19 +40,19 @@
                 <div class="modal-body">
                     <slot name="body">                
                       <p v-if="as400HasData == false && as400Loading == false">FVAMQSND無資料</p>              
-                      <table class="table"  v-if="as400HasData">
+                      <table class="table table-color table-body"  v-if="as400HasData">
                         <thead>
-                          <tr>
-                            <th>VAS_MSG_BODY(1~86)</th>                            
-                            <th>VAS_SND_DATE</th>
-                            <th>VAS_SND_TIME</th>
+                          <tr class="table-tr">
+                            <th class="table-th">VAS_MSG_BODY(1~86)</th>                            
+                            <th class="table-th">VAS_SND_DATE</th>
+                            <th class="table-th">VAS_SND_TIME</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr v-for="item in as400List">
-                            <td>{{item.VAS_MSG_BODY.substring(0,86)}}</td>                            
-                            <td>{{item.VAS_SND_DATE}}</td>
-                            <td>{{item.VAS_SND_TIME}}</td>
+                          <tr v-for="item in as400List" class="table-tr">
+                            <td class="table-td">{{item.VAS_MSG_BODY.substring(0,86)}}</td>                            
+                            <td class="table-td">{{item.VAS_SND_DATE}}</td>
+                            <td class="table-td">{{item.VAS_SND_TIME}}</td>
                           </tr>                        
                         </tbody>
                       </table>                        
@@ -67,21 +68,21 @@
                     <slot name="body">
                     <p v-if="swallowHasData == false && swallowLoading == false">swallow無資料</p>                        
                     <p v-if="swallowHasRcvTime == false && swallowLoading == false">swallow無SAS回應資料</p>
-                      <table class="table" v-if="swallowHasData">
+                      <table class="table table-color table-body" v-if="swallowHasData">
                         <thead>
-                          <tr>
-                            <th>MESG_APPLI_MAIN_REFNO</th>
-                            <th>AML_RESULT</th>
-                            <th>AML_SEND_DATE_TIME</th>
-                            <th>AML_ACK_DATE_TIME</th>
+                          <tr class="table-tr">
+                            <th class="table-th">MESG_APPLI_MAIN_REFNO</th>
+                            <th class="table-th">AML_RESULT</th>
+                            <th class="table-th">AML_SEND_DATE_TIME</th>
+                            <th class="table-th">AML_ACK_DATE_TIME</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr v-for="item in swallowList">
-                            <td>{{item.MESG_APPLI_MAIN_REFNO}}</td>
-                            <td>{{item.AML_RESULT}}</td>
-                            <td>{{item.AML_SEND_DATE_TIME}}</td>
-                            <td>{{item.AML_ACK_DATE_TIME}}</td>
+                          <tr v-for="item in swallowList" class="table-tr">
+                            <td class="table-td">{{item.MESG_APPLI_MAIN_REFNO}}</td>
+                            <td class="table-td">{{item.AML_RESULT}}</td>
+                            <td class="table-td">{{item.AML_SEND_DATE_TIME}}</td>
+                            <td class="table-td">{{item.AML_ACK_DATE_TIME}}</td>
                           </tr>                        
                         </tbody>
                       </table>                                              
@@ -99,17 +100,17 @@
                 <div class="modal-body">
                     <slot name="body">
                     <p v-if="sasHasData == false && sasLoading == false">Sas無資料</p>         
-                    <table class="table" v-if="sasHasData">
+                    <table class="table table-color table-body" v-if="sasHasData">
                         <thead>
-                          <tr>
-                            <th>REFERENCE_NUMBER</th>
-                            <th>TRANSACTION_DATE</th>
+                          <tr class="table-tr">
+                            <th class="table-th">REFERENCE_NUMBER</th>
+                            <th class="table-th">TRANSACTION_DATE</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr v-for="item in sasList">
-                            <td>{{item.REFERENCE_NUMBER}}</td>
-                            <td>{{item.TRANSACTION_DATE}}</td>
+                          <tr v-for="item in sasList" class="table-tr">
+                            <td class="table-td">{{item.REFERENCE_NUMBER}}</td>
+                            <td class="table-td">{{item.TRANSACTION_DATE}}</td>
                           </tr>                        
                         </tbody>
                       </table>      
@@ -117,16 +118,10 @@
                     </slot>
                 </div>
 
-                <!-- <div class="modal-footer">
-                    <slot name="footer">                   
-                    
-                    </slot>
-                </div> -->
-
                 </div>
             </div>
             </div>
-        </transition>
+        </div>
     </div>
   </div>
    
@@ -282,72 +277,6 @@
 </script>
 
 <style>
-body {
-  font-family: Helvetica Neue, Arial, sans-serif;
-  font-size: 14px;
-  color: #444;
-}
-
-table {
-  border: 2px solid #428bca;
-  border-radius: 3px;
-  background-color: #fff;
-}
-
-th {
-  background-color: #428bca;
-  color: rgba(255,255,255,0.66);
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-td {
-  background-color: #f9f9f9;
-}
-
-th, td {
-  min-width: 100%;
-  max-width: 100%;
-  padding: 10px 20px;
-}
-
-th, tr {
-  min-width: 100%;
-  max-width: 100%;
-}
-
-th.active {
-  color: #fff;
-}
-
-th.active .arrow {
-  opacity: 1;
-}
-
-.arrow {
-  display: inline-block;
-  vertical-align: middle;
-  width: 0;
-  height: 0;
-  margin-left: 5px;
-  opacity: 0.66;
-}
-
-.arrow.asc {
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-bottom: 4px solid #fff;
-}
-
-.arrow.dsc {
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-top: 4px solid #fff;
-}
-
 
 .modal-mask {
   position: fixed;
@@ -367,8 +296,13 @@ th.active .arrow {
 }
 
 .modal-container {
-  width: 900px;
-  margin: 0px auto;
+	/* 	update */
+  width: 800px;
+	height: calc(100vh - 40px);
+	max-height: 900px;
+	overflow: scroll;
+	margin: 20px auto;
+	/* 	update */
   padding: 20px 30px;
   background-color: #fff;
   border-radius: 2px;
