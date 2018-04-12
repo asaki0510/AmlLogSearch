@@ -9,23 +9,10 @@ routes.get('/',(req,res,next)=>{
 
 app.use(routes)
 
-var goods = require('./data/goods.json')
-var ratings = require('./data/ratings.json')
-var seller = require('./data/seller.json')
-
-routes.get('/goods',(req,res) => {
-    res.json(goods)
-})
-
-
-routes.get('/ratings',(req,res) => {
-    res.json(ratings)
-})
-
-
-routes.get('/seller',(req,res) => {
-    res.json(seller)
-})
+var sasLogApi = require('./build/saslog-api-sit')
+var primeLogApi = require('./build/primelog-api-sit')
+app.use('/api',sasLogApi)
+app.use('/primeapi',primeLogApi)
 
 app.use('/api',routes)
 
