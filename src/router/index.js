@@ -8,7 +8,7 @@ import PrimeLog from '@/components/AmlLog/PrimeLog'
 Vue.use(Router)
 
 export default new Router({
-    mode: 'history',
+    // mode: 'history',
     // base: '/137290/BuyPig/',
   routes: [
     {
