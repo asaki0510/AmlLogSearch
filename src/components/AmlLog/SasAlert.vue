@@ -13,10 +13,10 @@
 import Vue from 'vue'
 import Datatable from 'vue2-datatable-component'
 import axios from 'axios'
-import moment from 'moment'
-import uniq from 'lodash/uniq'
+// import moment from 'moment'
+// import uniq from 'lodash/uniq'
 import orderBy from 'lodash/orderBy'
-// import mockData from '../SubFunction/MockData.js'
+
 Vue.use(Datatable)
 export default {
   name: 'sas-alert',
@@ -25,7 +25,6 @@ export default {
       { title: 'PARTY_FULL_NM', field: 'PARTY_FULL_NM', sortable: true },
       { title: 'INCIDENT_ID', field: 'INCIDENT_ID', sortable: true },
       { title: 'PARTY_ID', field: 'PARTY_ID', sortable: true },
-      { title: 'PARTY FULL NM', field: 'PARTY_FULL_NM',sortable: true },
       { title: 'ACTUAL_VALUES_TEXT', field: 'ACTUAL_VALUES_TEXT' },
       { title: 'INCIDENT_CATEFORY_CD', field: 'INCIDENT_CATEFORY_CD' },
       { title: 'INCIDENT_SUBCATEGORY_CD', field: 'INCIDENT_SUBCATEGORY_CD'}
@@ -50,13 +49,11 @@ export default {
         console.log(query);
         console.log(rows);
         const typeOf = o => Object.prototype.toString.call(o).slice(8, -1).toLowerCase()
-        const purify = o => JSON.parse(JSON.stringify(o)) // purify data
-        query = purify(query)
         let limit = query.limit
         let offset = query.offset
         let sort = query.sort
         let order = query.order
-        let columns = ['PARTY_FULL_NM', 'INCIDENT_ID', 'PARTY_ID', 'PARTY_FULL_NM', 'ACTUAL_VALUES_TEXT','INCIDENT_CATEFORY_CD','INCIDENT_SUBCATEGORY_CD']
+        let columns = ['PARTY_FULL_NM', 'INCIDENT_ID', 'PARTY_ID' , 'ACTUAL_VALUES_TEXT','INCIDENT_CATEFORY_CD','INCIDENT_SUBCATEGORY_CD']
 
         columns.forEach(function(field){
           switch (typeOf(query[field])) {
