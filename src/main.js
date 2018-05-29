@@ -4,13 +4,17 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import VueResource from 'vue-resource'
-// import 'reset-css'
+import 'reset-css'
 Vue.use(VueResource);
 import Popper from 'popper.js'
-import '@/assets/css/bootstrap.css'
+// import '@/assets/css/bootstrap.css'
 // import 'bootstrap/dist/css/bootstrap.min.css';
-import bootstap from 'bootstrap'
+// import bootstap from 'bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap'
 import '@/assets/css/Site.css'
+import 'font-awesome/css/font-awesome.css'
+
 // import '@/assets/scripts/notify.js'
 
 

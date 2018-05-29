@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '@/components/AmlLog/Home'
 import SasLog from '@/components/AmlLog/SasLog'
 import PrimeLog from '@/components/AmlLog/PrimeLog'
+import SasAlert from '@/components/AmlLog/SasAlert'
 
 
 Vue.use(Router)
@@ -25,6 +26,11 @@ export default new Router({
       path: '/PrimeLog',
       name: 'PrimeLog',
       component: PrimeLog
+    },
+    {
+      path: '/SasAlert',
+      name: 'SasAlert',
+      component: SasAlert
     }
   ]
 })

@@ -9,7 +9,7 @@
             <th></th>
             <th>400</th>
             <th>Swallow</th>
-            <th>End</th>            
+            <th>End</th>
           </tr>
         </thead>
         <tbody>
@@ -19,7 +19,7 @@
             <td><p>MEGA_OBSWDBT.SWMIMSG</p>
               MEGA_OBSWDBT.SWMOMSG
             </td>
-            <td>OFAC.FilterTranTable</td>            
+            <td>OFAC.FilterTranTable</td>
           </tr>
           <tr>
             <td>Sas</td>
@@ -39,7 +39,7 @@
             <th></th>
             <th>400</th>
             <th>Swallow</th>
-            <th>End</th>            
+            <th>End</th>
           </tr>
         </thead>
         <tbody>
@@ -47,7 +47,7 @@
             <td>Prime Sit</td>
             <td>192.168.51.100</td>
             <td>192.168.51.30</td>
-            <td>192.168.211.237</td>            
+            <td>192.168.211.237</td>
           </tr>
           <tr>
             <td>Sas Sit</td>
@@ -57,13 +57,13 @@
           </tr>
         </tbody>
       </table>
-    </div>    
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Hello',
+  name: 'hello',
   data () {
     return {
       msg: '洗錢防制傳送軌跡查詢'
