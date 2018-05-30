@@ -26,8 +26,14 @@ export default {
       { title: 'INCIDENT_ID', field: 'INCIDENT_ID', sortable: true },
       { title: 'PARTY_ID', field: 'PARTY_ID', sortable: true },
       { title: 'ACTUAL_VALUES_TEXT', field: 'ACTUAL_VALUES_TEXT' },
-      { title: 'INCIDENT_CATEFORY_CD', field: 'INCIDENT_CATEFORY_CD' },
-      { title: 'INCIDENT_SUBCATEGORY_CD', field: 'INCIDENT_SUBCATEGORY_CD'}
+      { title: 'CATEFORY_CD', field: 'INCIDENT_CATEFORY_CD' },
+      { title: 'SUBCATEGORY_CD', field: 'INCIDENT_SUBCATEGORY_CD'},
+      { title: 'VALID_FROM_DTTM', field: 'VALID_FROM_DTTM', visible: false},
+      { title: 'SCENARIO_NAME', field: 'SCENARIO_NAME', visible: false},
+      { title: 'PARTY_RK', field: 'PARTY_RK', visible: false},
+      { title: 'MLR_SCORE', field: 'MONY_LAUNDERING_RISK_SCORE', visible: false},
+      { title: 'RUN_DATE', field: 'RUN_DATE', visible: false},
+      { title: 'INCIDENT_TYPE_CD', field: 'INCIDENT_TYPE_CD', visible: false}
     ],
     data: [],
     total: 10,
